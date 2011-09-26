@@ -6,6 +6,7 @@ using ShowBot.Services;
 using ShowBot.Model;
 using System.Threading.Tasks;
 using ShowBot.Infrastructure;
+using System.IO;
 
 namespace ShowBot {
 	public class Engine : IEngine {
@@ -41,9 +42,10 @@ namespace ShowBot {
 
 		private void HandleFinishedDownload(Download finishedDownload) {
 			string movieFile = GuessMovieFile(finishedDownload.Path, finishedDownload.Files);
-			bool couldFindSubtitle = subtitler.GetSubtitleForFile(movieFile);
+			bool couldFindSubtitle = subtitler.GetSubtitleForFile(Path.Combine(finishedDownload.Path, movieFile));
 			if (couldFindSubtitle) {
 				downloader.RemoveDownload(finishedDownload);
+				notifier.Notify(String.Format("The movie {0} is completed", movieFile ));
 			}
 		}
 
