@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{2225A770-B5DC-46A2-9A07-5F081718A0C3}</ProjectGuid>
+    <ProjectGuid>{A2D1F0FF-FAC7-4B90-A754-05F452663E43}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ShowBot</RootNamespace>
-    <AssemblyName>ShowBot</AssemblyName>
+    <AssemblyName>ShowBot.Core</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -40,15 +40,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Engine.cs" />
-    <Compile Include="Infrastructure\IEngine.cs" />
+    <Compile Include="Model\Download.cs" />
+    <Compile Include="Model\Show.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ShowBot.Core\ShowBot.Core.csproj">
-      <Project>{A2D1F0FF-FAC7-4B90-A754-05F452663E43}</Project>
-      <Name>ShowBot.Core</Name>
-    </ProjectReference>
+    <Compile Include="Services\IDownloader.cs" />
+    <Compile Include="Services\INewShowsProvider.cs" />
+    <Compile Include="Services\INotifier.cs" />
+    <Compile Include="Services\ISubtitler.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

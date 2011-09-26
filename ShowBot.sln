@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShowBot", "ShowBot\ShowBot.csproj", "{2225A770-B5DC-46A2-9A07-5F081718A0C3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShowBot.Core", "ShowBot.Core\ShowBot.Core.csproj", "{A2D1F0FF-FAC7-4B90-A754-05F452663E43}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +15,10 @@ Global
 		{2225A770-B5DC-46A2-9A07-5F081718A0C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2225A770-B5DC-46A2-9A07-5F081718A0C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2225A770-B5DC-46A2-9A07-5F081718A0C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2D1F0FF-FAC7-4B90-A754-05F452663E43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2D1F0FF-FAC7-4B90-A754-05F452663E43}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2D1F0FF-FAC7-4B90-A754-05F452663E43}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2D1F0FF-FAC7-4B90-A754-05F452663E43}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
