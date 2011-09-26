@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Ninject">
+      <HintPath>..\packages\Ninject.2.2.1.4\lib\net40-Full\Ninject.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -41,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Engine.cs" />
+    <Compile Include="Infrastructure\DefaultNinjectModule.cs" />
     <Compile Include="Infrastructure\IEngine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -49,6 +53,13 @@
       <Project>{A2D1F0FF-FAC7-4B90-A754-05F452663E43}</Project>
       <Name>ShowBot.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ShowBot.DefaultServices\ShowBot.DefaultServices.csproj">
+      <Project>{C3EC7799-C34B-4669-9BAD-4E22BD2FF58A}</Project>
+      <Name>ShowBot.DefaultServices</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
