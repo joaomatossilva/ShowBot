@@ -23,7 +23,16 @@ namespace ShowBot.DefaultServices {
 				if (subtitlesFound.Count == 0) {
 					return false;
 				}
-				client.DownloadSubtitleToPath(Path.GetDirectoryName(movieFilePath), subtitlesFound.First());
+				string downloadedSubtitleFile = client.DownloadSubtitleToPath(Path.GetDirectoryName(movieFilePath), subtitlesFound.First());
+				try {
+					string movieFileName = Path.GetFileNameWithoutExtension(movieFilePath);
+					if (!Path.GetFileNameWithoutExtension(downloadedSubtitleFile).Equals(movieFileName, StringComparison.InvariantCultureIgnoreCase)) {
+						string newsubtitleFilePath = Path.Combine(Path.GetDirectoryName(movieFilePath), string.Concat(movieFileName, Path.GetExtension(downloadedSubtitleFile)));
+						File.Move(downloadedSubtitleFile, newsubtitleFilePath);
+					}
+				} catch {
+					//soak exceptions from renaming the subtitle file
+				}
 			}
 			return true;
 		}
