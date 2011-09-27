@@ -8,12 +8,17 @@ namespace ShowBot.Model {
 		public int Id { get; set; }
 		public string TorrentFile { get; set; }
 		public DownloadStatus Status { get; set; }
-		public int Progress { get; set; }
+		public double Progress { get; set; }
 		public string Path { get; set; }
 		public IEnumerable<string> Files { get; private set; }
 
 		public Download() {
-			Files = new List<string>();
+			Files = new string[0];
+			Status = DownloadStatus.NotStarted;
+		}
+
+		public Download(IList<string> files) {
+			Files = files;
 			Status = DownloadStatus.NotStarted;
 		}
 	}
