@@ -35,17 +35,22 @@ namespace ShowBot {
 
 			foreach (var download in currentDownloads) {
 				if (download.Status == Model.DownloadStatus.Finished) {
-					Task.Factory.StartNew(() => HandleFinishedDownload(download));
+					HandleFinishedDownload(download);
 				}
 			}
 		}
 
 		private void HandleFinishedDownload(Download finishedDownload) {
-			string movieFile = GuessMovieFile(finishedDownload.Path, finishedDownload.Files);
-			bool couldFindSubtitle = subtitler.GetSubtitleForFile(Path.Combine(finishedDownload.Path, movieFile));
-			if (couldFindSubtitle) {
-				downloader.RemoveDownload(finishedDownload);
-				notifier.Notify(String.Format("The movie {0} is completed", movieFile ));
+			try {
+				string movieFile = GuessMovieFile(finishedDownload.Path, finishedDownload.Files);
+				string movieFullPath = Path.Combine(finishedDownload.Path, movieFile);
+				bool couldFindSubtitle = subtitler.GetSubtitleForFile(movieFullPath);
+				if (couldFindSubtitle) {
+					downloader.RemoveDownload(finishedDownload);
+					notifier.Notify(String.Format("The movie {0} is completed", movieFile));
+				}
+			} catch (Exception ex) {
+				throw;
 			}
 		}
 
