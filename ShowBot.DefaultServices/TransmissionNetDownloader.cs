@@ -41,7 +41,7 @@ namespace ShowBot.DefaultServices {
 										 Status = torrent.isFinished ? DownloadStatus.Finished : DownloadStatus.InProgress,
 										 TorrentFile = torrent.torrentfile
 								 };
-			return new List<Download>();
+			return statusTorrents;
 		}
 
 		public void RemoveDownload(Download downloadToRemove) {
