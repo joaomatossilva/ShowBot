@@ -35,6 +35,7 @@
       <HintPath>..\packages\Ninject.2.2.1.4\lib\net40-Full\Ninject.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -44,7 +45,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Engine.cs" />
+    <Compile Include="Infrastructure\ConfigProvider.cs" />
     <Compile Include="Infrastructure\DefaultNinjectModule.cs" />
+    <Compile Include="Infrastructure\DynamicConfigReader.cs" />
+    <Compile Include="Infrastructure\DynamicConfigSection.cs" />
     <Compile Include="Infrastructure\IEngine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

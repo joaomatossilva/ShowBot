@@ -14,7 +14,8 @@ namespace ShowBot.Infrastructure {
 			BindNewShowsProvider();
 			BindNotifier();
 			BindSubtitler();
-			Kernel.Bind<IEngine>().To<Engine>();
+			Kernel.Bind<IConfig>().ToProvider<ConfigProvider>();
+			Kernel.Bind<IEngine>().To<Engine>();			
 		}
 
 		public virtual void BindNotifier(){

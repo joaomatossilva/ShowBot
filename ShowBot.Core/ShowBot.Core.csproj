@@ -43,6 +43,7 @@
     <Compile Include="Model\Download.cs" />
     <Compile Include="Model\Show.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\IConfig.cs" />
     <Compile Include="Services\IDownloader.cs" />
     <Compile Include="Services\INewShowsProvider.cs" />
     <Compile Include="Services\INotifier.cs" />
