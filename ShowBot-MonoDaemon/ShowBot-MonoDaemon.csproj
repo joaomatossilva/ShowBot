@@ -58,6 +58,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="showbot-daemon.sh" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ShowBot.Core\ShowBot.Core.csproj">
