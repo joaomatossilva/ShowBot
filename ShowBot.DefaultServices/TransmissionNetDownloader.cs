@@ -6,6 +6,7 @@ using ShowBot.Services;
 using ShowBot.Model;
 using TransmissionNet;
 using System.IO;
+using System.Net;
 
 namespace ShowBot.DefaultServices {
 	public class TransmissionNetDownloader : IDownloader {
@@ -22,13 +23,19 @@ namespace ShowBot.DefaultServices {
 		}
 
 		public Download AddDownload(Show showToDownload) {
-			var torrent = transmission.AddTorrent(new Uri(showToDownload.TorrentFile));
-			return new Download {
-				Id = torrent.id,
-				Status = DownloadStatus.NotStarted,
-				TorrentFile = showToDownload.TorrentFile,
-				Path = string.Empty
-			};
+			string torrentFile = DownloadTorrentFile(showToDownload.TorrentFile);
+			try {
+				Console.WriteLine("Adding torrent {0}", new Uri(torrentFile));
+				var torrent = transmission.AddTorrent(new Uri(torrentFile));
+				return new Download {
+					Id = torrent.id,
+					Status = DownloadStatus.NotStarted,
+					TorrentFile = showToDownload.TorrentFile,
+					Path = string.Empty
+				};
+			} finally {
+				File.Delete(torrentFile);
+			}
 		}
 
 		public IEnumerable<Download> GetStatus() {
@@ -56,6 +63,20 @@ namespace ShowBot.DefaultServices {
 				return torrentDownloadDir;
 			}
 			return Path.Combine(baseDownloadDir, Path.IsPathRooted(torrentDownloadDir) ? torrentDownloadDir.Substring(1) : torrentDownloadDir);
+		}
+
+		private string DownloadTorrentFile(string torrentUrl) {
+			string torrentFile = Path.GetTempFileName();
+			try {
+				WebClient client = new WebClient();
+				client.DownloadFile(torrentUrl, torrentFile);
+			} catch {
+				if (File.Exists(torrentFile)) {
+					File.Delete(torrentFile);
+				}
+				throw;
+			}
+			return torrentFile;
 		}
 	}
 }
