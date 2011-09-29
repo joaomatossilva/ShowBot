@@ -2,4 +2,8 @@ bin
 obj
 *.suo
 *.user
+*.pdb
 packages
+
+ShowBot.Debug
+ShowBot-Debug.sln
