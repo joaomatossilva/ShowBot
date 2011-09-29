@@ -11,15 +11,17 @@ namespace ShowBot.DefaultServices {
 	public class OSDBNetSubtitler : ISubtitler {
 
 		private readonly string userAgent;
+		private readonly string languages;
 
 		public OSDBNetSubtitler(IConfig config) {
 			var settings = config.GetConfigurationSettings();
 			userAgent = settings.UserAgent;
+			languages = settings.Languages;
 		}
 
 		public bool GetSubtitleForFile(string movieFilePath) {
-			using (IAnonymousClient client = Osdb.Login("", userAgent)) {
-				var subtitlesFound = client.SearchSubtitles(movieFilePath);
+			using (IAnonymousClient client = Osdb.Login(userAgent)) {
+				var subtitlesFound = client.SearchSubtitlesFromFile(languages, movieFilePath);
 				if (subtitlesFound.Count == 0) {
 					return false;
 				}
