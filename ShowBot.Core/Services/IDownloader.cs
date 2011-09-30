@@ -9,6 +9,7 @@ namespace ShowBot.Services {
 	public interface IDownloader {
 		Download AddDownload(Show showToDownload);
 		IEnumerable<Download> GetStatus();
+		void PauseDownload(Download downloadToPause);
 		void RemoveDownload(Download downloadToRemove);
 	}
 }

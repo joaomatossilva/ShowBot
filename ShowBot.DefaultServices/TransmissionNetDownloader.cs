@@ -54,6 +54,10 @@ namespace ShowBot.DefaultServices {
 			return statusTorrents;
 		}
 
+		public void PauseDownload(Download downloadToPause) {
+			transmission.StopTorrent(downloadToPause.Id);
+		}
+
 		public void RemoveDownload(Download downloadToRemove) {
 			transmission.RemoveTorrent(downloadToRemove.Id);
 		}
