@@ -43,14 +43,14 @@ namespace ShowBot.DefaultServices {
 			var statusTorrents = from torrent in torrents
 								 select new Download(
 										(from file in torrent.files
-										select file.name).ToList()
+										 select new DownloadFile { Name = file.name, Lenght = file.lenght }).ToList()
 									 ) {
 										 Id = torrent.id,
 										 Path = HandleDownloadDir(torrent.downloadDir),
 										 Progress = torrent.percentDone,
 										 Status = torrent.percentDone == 1.0 ? DownloadStatus.Finished : DownloadStatus.InProgress,
 										 TorrentFile = torrent.torrentfile
-								 };
+									 };
 			return statusTorrents;
 		}
 

@@ -66,8 +66,9 @@ namespace ShowBot {
 			}
 		}
 
-		private string GuessMovieFile(string path, IEnumerable<string> files) {
-			return files.First();
+		private string GuessMovieFile(string path, IEnumerable<DownloadFile> files) {
+			var biggestFile = files.OrderByDescending(file => file.Lenght).First();
+			return biggestFile.Name;
 		}
 	}
 }
