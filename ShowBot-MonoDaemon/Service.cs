@@ -55,6 +55,10 @@ namespace ShowBot_MonoDaemon {
 		}
 
 		void timer_Elapsed(object sender, ElapsedEventArgs e) {
+			ExecuteCheck();
+		}
+
+		private void ExecuteCheck() {
 			Console.WriteLine("timer tick");
 			var dateNow = DateTime.Now;
 			engine.CheckForNewShows(lastTimeChecked);
@@ -73,6 +77,7 @@ namespace ShowBot_MonoDaemon {
 		public void Start(string[] args) {
 			Console.WriteLine("starting service");
 			timer.Enabled = true;
+			ExecuteCheck();
 		}
 
 		public void Stop() {
