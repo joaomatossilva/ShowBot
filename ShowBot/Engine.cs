@@ -50,6 +50,7 @@ namespace ShowBot {
 		private void HandleFinishedDownload(Download finishedDownload) {
 			try {
 				Console.WriteLine("Handling finished download id {0}...", finishedDownload.Id);
+				downloader.PauseDownload(finishedDownload);
 				string movieFile = GuessMovieFile(finishedDownload.Path, finishedDownload.Files);
 				string movieFullPath = Path.Combine(finishedDownload.Path, movieFile);
 				Console.WriteLine("Getting subtitles for movie {0}", movieFullPath);
