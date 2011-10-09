@@ -4,6 +4,7 @@ obj
 *.user
 *.pdb
 packages
+_Resharper*
 
 ShowBot.Debug
 ShowBot-Debug.sln
