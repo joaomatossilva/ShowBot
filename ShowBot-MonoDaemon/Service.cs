@@ -45,7 +45,8 @@ namespace ShowBot_MonoDaemon {
 			ISubtitler subtitler = new OSDBNetSubtitler(new DynamicConfigReader("OSDBNetSubtitler"));
 			IDownloader downloader = new TransmissionNetDownloader(new DynamicConfigReader("TransmissionNetDownloader"));
 			INewShowsProvider showsProvider = new ShowRssNewShowProvider(new DynamicConfigReader("ShowRssNewShowProvider"));
-			engine = new Engine(downloader, showsProvider, subtitler, notifier);
+			IConfig engineConfig = new DynamicConfigReader("Engine");
+			engine = new Engine(downloader, showsProvider, subtitler, notifier, engineConfig);
 			///************** End Temp modification 
 
 

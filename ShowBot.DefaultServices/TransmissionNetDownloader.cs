@@ -26,13 +26,13 @@ namespace ShowBot.DefaultServices {
 			string torrentFile = DownloadTorrentFile(showToDownload.TorrentFile);
 			try {
 				Console.WriteLine("Adding torrent {0}", new Uri(torrentFile));
-				var torrent = transmission.AddTorrent(new Uri(torrentFile));
-				return new Download {
-					Id = torrent.id,
-					Status = DownloadStatus.NotStarted,
-					TorrentFile = showToDownload.TorrentFile,
-					Path = string.Empty
-				};
+				var addedTorrent = transmission.AddTorrent(new Uri(torrentFile));
+
+				var torrent = (from torrentStatus in transmission.CheckStatus()
+							   where torrentStatus.id == addedTorrent.id
+							   select torrentStatus).Single();
+
+				return BuildDownloadFromTorrent(torrent);
 			} finally {
 				File.Delete(torrentFile);
 			}
@@ -41,16 +41,7 @@ namespace ShowBot.DefaultServices {
 		public IEnumerable<Download> GetStatus() {
 			var torrents = transmission.CheckStatus();
 			var statusTorrents = from torrent in torrents
-								 select new Download(
-										(from file in torrent.files
-										 select new DownloadFile { Name = file.name, Lenght = file.lenght }).ToList()
-									 ) {
-										 Id = torrent.id,
-										 Path = HandleDownloadDir(torrent.downloadDir),
-										 Progress = torrent.percentDone,
-										 Status = torrent.percentDone == 1.0 ? DownloadStatus.Finished : DownloadStatus.InProgress,
-										 TorrentFile = torrent.torrentfile
-									 };
+								 select BuildDownloadFromTorrent(torrent);
 			return statusTorrents;
 		}
 
@@ -62,17 +53,21 @@ namespace ShowBot.DefaultServices {
 			transmission.RemoveTorrent(downloadToRemove.Id);
 		}
 
+		public void AddTracker(Download download, string tracker) {
+			transmission.AddTracker(download.Id, tracker);
+		}
+
 		private string HandleDownloadDir(string torrentDownloadDir) {
-			if(string.IsNullOrEmpty(baseDownloadDir)){
+			if (string.IsNullOrEmpty(baseDownloadDir)) {
 				return torrentDownloadDir;
 			}
 			return Path.Combine(baseDownloadDir, Path.IsPathRooted(torrentDownloadDir) ? torrentDownloadDir.Substring(1) : torrentDownloadDir);
 		}
 
-		private string DownloadTorrentFile(string torrentUrl) {
+		private static string DownloadTorrentFile(string torrentUrl) {
 			string torrentFile = Path.GetTempFileName();
 			try {
-				WebClient client = new WebClient();
+				var client = new WebClient();
 				client.DownloadFile(torrentUrl, torrentFile);
 			} catch {
 				if (File.Exists(torrentFile)) {
@@ -81,6 +76,21 @@ namespace ShowBot.DefaultServices {
 				throw;
 			}
 			return torrentFile;
+		}
+
+		private Download BuildDownloadFromTorrent(TorrentStatus torrent) {
+			return new Download(
+				(from file in torrent.files
+				 select new DownloadFile { Name = file.name, Lenght = file.lenght }).ToList(),
+				(from tracker in torrent.trackers
+				 select tracker.announce).ToList()
+				) {
+					Id = torrent.id,
+					Path = HandleDownloadDir(torrent.downloadDir),
+					Progress = torrent.percentDone,
+					Status = Math.Abs(torrent.percentDone - 1.0) < 0.0001 ? DownloadStatus.Finished : DownloadStatus.InProgress,
+					TorrentFile = torrent.torrentfile
+				};
 		}
 	}
 }

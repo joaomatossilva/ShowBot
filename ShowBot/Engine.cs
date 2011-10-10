@@ -15,11 +15,18 @@ namespace ShowBot {
 		private readonly ISubtitler subtitler;
 		private readonly INotifier notifier;
 
-		public Engine(IDownloader downloader, INewShowsProvider newShowsProvider, ISubtitler subtitler, INotifier notifier) {
+		private readonly string[] publicTrackers;
+		private readonly string[] privateTrackers;
+
+		public Engine(IDownloader downloader, INewShowsProvider newShowsProvider, ISubtitler subtitler, INotifier notifier, IConfig config) {
 			this.downloader = downloader;
 			this.newShowsProvider = newShowsProvider;
 			this.subtitler = subtitler;
 			this.notifier = notifier;
+
+			var settings = config.GetConfigurationSettings();
+			publicTrackers = settings.PublicTrackers.Split(',');
+			privateTrackers = settings.PrivateTrackers.Split(',');
 		}
 
 		public void CheckForNewShows(DateTime lastExecutionDate) {
@@ -31,7 +38,19 @@ namespace ShowBot {
 				Console.WriteLine("Downloading show {0} : {1}", newShow.Title, newShow.TorrentFile);
 				var download = downloader.AddDownload(newShow);
 				Console.WriteLine("Show is beeing downloaded with id {0}", download.Id);
+				if(!IsPrivateTorrent(download))
+					EnsurePublicTrackers(download);
 			}
+		}
+
+		private void EnsurePublicTrackers(Download download) {
+			foreach (var publicTracker in publicTrackers.Where(publicTracker => !download.Trackers.Contains(publicTracker))) {
+				downloader.AddTracker(download, publicTracker);
+			}
+		}
+
+		private bool IsPrivateTorrent(Download download) {
+			return privateTrackers.Any(privateTracker => download.Trackers.Any(tracker => tracker.Contains(privateTracker)));
 		}
 
 		public void CheckStatus() {
@@ -40,8 +59,9 @@ namespace ShowBot {
 			Console.WriteLine("{0} currently active downloads", currentDownloads.Count());
 
 			foreach (var download in currentDownloads) {
-				Console.WriteLine("{0} is at {1} - {2}", download.Id, download.Progress, download.Status.ToString());
-				if (download.Status == Model.DownloadStatus.Finished) {
+				var privateTorrent = IsPrivateTorrent(download);
+				Console.WriteLine("{3}:{0} is at {1} - {2}", download.Id, download.Progress, download.Status.ToString(), privateTorrent ? "private" : "public");
+				if (!privateTorrent && download.Status == Model.DownloadStatus.Finished) {
 					HandleFinishedDownload(download);
 				}
 			}

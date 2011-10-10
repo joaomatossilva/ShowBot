@@ -11,5 +11,6 @@ namespace ShowBot.Services {
 		IEnumerable<Download> GetStatus();
 		void PauseDownload(Download downloadToPause);
 		void RemoveDownload(Download downloadToRemove);
+		void AddTracker(Download download, string tracker);
 	}
 }
