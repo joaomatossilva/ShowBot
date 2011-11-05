@@ -31,6 +31,6 @@ namespace ShowBot.Model {
 	public class DownloadFile {
 		public int Id { get; set; }
 		public string Name { get; set; }
-		public int Lenght { get; set; }
+		public long Lenght { get; set; }
 	}
 }
