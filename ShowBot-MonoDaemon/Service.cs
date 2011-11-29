@@ -56,16 +56,28 @@ namespace ShowBot_MonoDaemon {
 		}
 
 		void timer_Elapsed(object sender, ElapsedEventArgs e) {
-			ExecuteCheck();
+			try {
+				ExecuteCheck();
+			} catch (Exception ex) {
+				Console.WriteLine("General Error {0}: {1} - {2}", DateTime.Now, ex.Message, ex.StackTrace);
+			}
 		}
 
 		private void ExecuteCheck() {
 			Console.WriteLine("timer tick");
 			var dateNow = DateTime.Now;
-			engine.CheckForNewShows(lastTimeChecked);
+			try {
+				engine.CheckForNewShows(lastTimeChecked);
+			} catch (Exception ex) {
+				Console.WriteLine("General Error checking for new shows from {0} to {1}: {2} - {3}", lastTimeChecked, dateNow, ex.Message, ex.StackTrace);
+			}
 			lastTimeChecked = dateNow;
 			PersistLastTimeCheck(lastTimeChecked);
-			engine.CheckStatus();
+			try {
+				engine.CheckStatus();
+			} catch (Exception ex) {
+				Console.WriteLine("General Error checking status {0}: {1} - {2}", dateNow, ex.Message, ex.StackTrace);
+			}
 		}
 
 		private void PersistLastTimeCheck(DateTime lastTimeChecked) {

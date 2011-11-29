@@ -36,10 +36,15 @@ namespace ShowBot {
 
 			foreach (var newShow in newShows) {
 				Console.WriteLine("Downloading show {0} : {1}", newShow.Title, newShow.TorrentFile);
-				var download = downloader.AddDownload(newShow);
-				Console.WriteLine("Show is beeing downloaded with id {0}", download.Id);
-				if(!IsPrivateTorrent(download))
-					EnsurePublicTrackers(download);
+				try {
+					var download = downloader.AddDownload(newShow);
+					Console.WriteLine("Show is beeing downloaded with id {0}", download.Id);
+					if (!IsPrivateTorrent(download))
+						EnsurePublicTrackers(download);
+					notifier.Notify(string.Format("Started downloading the show {0}", newShow.Title));
+				} catch (Exception ex) {
+					Console.WriteLine("Error adding show {0} :{1} - {2}", newShow.Title, ex.Message, ex.StackTrace);
+				}
 			}
 		}
 
