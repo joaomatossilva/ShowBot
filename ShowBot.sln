@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShowBot-WindowsService", "S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShowBot-MonoDaemon", "ShowBot-MonoDaemon\ShowBot-MonoDaemon.csproj", "{94ECC8AC-494C-4A4F-BF31-D9932A83EEBE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LegendasTvScrapper", "LegendasTvScrapper\LegendasTvScrapper.csproj", "{787DFB94-C87D-49AF-A05A-79D933ACA75E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +73,16 @@ Global
 		{94ECC8AC-494C-4A4F-BF31-D9932A83EEBE}.Release|Mixed Platforms.Build.0 = Release|x86
 		{94ECC8AC-494C-4A4F-BF31-D9932A83EEBE}.Release|x86.ActiveCfg = Release|x86
 		{94ECC8AC-494C-4A4F-BF31-D9932A83EEBE}.Release|x86.Build.0 = Release|x86
+		{787DFB94-C87D-49AF-A05A-79D933ACA75E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{787DFB94-C87D-49AF-A05A-79D933ACA75E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{787DFB94-C87D-49AF-A05A-79D933ACA75E}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{787DFB94-C87D-49AF-A05A-79D933ACA75E}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{787DFB94-C87D-49AF-A05A-79D933ACA75E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{787DFB94-C87D-49AF-A05A-79D933ACA75E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{787DFB94-C87D-49AF-A05A-79D933ACA75E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{787DFB94-C87D-49AF-A05A-79D933ACA75E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{787DFB94-C87D-49AF-A05A-79D933ACA75E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{787DFB94-C87D-49AF-A05A-79D933ACA75E}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
