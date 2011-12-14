@@ -68,11 +68,11 @@ namespace ShowBot_MonoDaemon {
 			var dateNow = DateTime.Now;
 			try {
 				engine.CheckForNewShows(lastTimeChecked);
+				lastTimeChecked = dateNow;
+				PersistLastTimeCheck(lastTimeChecked);
 			} catch (Exception ex) {
 				Console.WriteLine("General Error checking for new shows from {0} to {1}: {2} - {3}", lastTimeChecked, dateNow, ex.Message, ex.StackTrace);
 			}
-			lastTimeChecked = dateNow;
-			PersistLastTimeCheck(lastTimeChecked);
 			try {
 				engine.CheckStatus();
 			} catch (Exception ex) {
