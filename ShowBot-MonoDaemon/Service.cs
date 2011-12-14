@@ -42,7 +42,7 @@ namespace ShowBot_MonoDaemon {
 			kernel = new StandardKernel(new DefaultNinjectModule());
 
 			INotifier notifier = new EMailNotifier(new DynamicConfigReader("EMailNotifier"));
-			ISubtitler subtitler = new OSDBNetSubtitler(new DynamicConfigReader("OSDBNetSubtitler"));
+			ISubtitler subtitler = new LegendasTvSubtitler(new DynamicConfigReader("LegendasTvSubtitler"));
 			IDownloader downloader = new TransmissionNetDownloader(new DynamicConfigReader("TransmissionNetDownloader"));
 			INewShowsProvider showsProvider = new ShowRssNewShowProvider(new DynamicConfigReader("ShowRssNewShowProvider"));
 			IConfig engineConfig = new DynamicConfigReader("Engine");
