@@ -64,8 +64,9 @@ namespace ShowBot_MonoDaemon {
 		}
 
 		private void ExecuteCheck() {
-			Console.WriteLine("timer tick");
 			var dateNow = DateTime.Now;
+			Console.WriteLine("timer tick at {0}", dateNow);
+			Console.WriteLine("last check: {0}", lastTimeChecked);
 			try {
 				engine.CheckForNewShows(lastTimeChecked);
 				lastTimeChecked = dateNow;
