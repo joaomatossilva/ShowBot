@@ -25,6 +25,10 @@ namespace ShowBot.DefaultServices {
 					AutoDetectExtensions = true,
 			});
 
+			foreach (var item in feed.Channel.Items) {
+				Console.WriteLine("{0}: {1}", item.Title, item.PublicationDate);
+			}
+
 			var newShows = from item in feed.Channel.Items
 						   where item.PublicationDate >= sinceDate
 						   select new Show { Title = item.Title, TorrentFile = item.Link.ToString() };
