@@ -39,8 +39,6 @@ namespace ShowBot {
 				try {
 					var download = downloader.AddDownload(newShow);
 					Console.WriteLine("Show is beeing downloaded with id {0}", download.Id);
-					if (!IsPrivateTorrent(download))
-						EnsurePublicTrackers(download);
 					notifier.Notify(string.Format("Started downloading the show {0}", newShow.Title));
 				} catch (Exception ex) {
 					Console.WriteLine("Error adding show {0} :{1} - {2}", newShow.Title, ex.Message, ex.StackTrace);
@@ -66,6 +64,8 @@ namespace ShowBot {
 			foreach (var download in currentDownloads) {
 				var privateTorrent = IsPrivateTorrent(download);
 				Console.WriteLine("{3}:{0} is at {1} - {2}", download.Id, download.Progress, download.Status.ToString(), privateTorrent ? "private" : "public");
+				if (!privateTorrent)
+					EnsurePublicTrackers(download);
 				if (!privateTorrent && download.Status == Model.DownloadStatus.Finished) {
 					HandleFinishedDownload(download);
 				}
