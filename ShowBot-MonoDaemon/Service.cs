@@ -9,9 +9,12 @@ using ShowBot.Infrastructure;
 using ShowBot.DefaultServices;
 using ShowBot.Services;
 using ShowBot;
+using log4net;
 
 namespace ShowBot_MonoDaemon {
 	public class Service {
+		private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 		private const string INTERVAL_KEY = "Interval";
 		private const string LAST_CHECK_DATE_KEY = "LastCheckDate";
 
@@ -30,7 +33,7 @@ namespace ShowBot_MonoDaemon {
 				lastTimeChecked = DateTime.Now.AddMilliseconds(-1 * interval);
 				config.AppSettings.Settings[LAST_CHECK_DATE_KEY].Value = lastTimeChecked.ToString();
 				config.Save();
-				Console.WriteLine("last check date saved");
+				Log.InfoFormat("last check date saved");
 			} else {
 				lastTimeChecked = DateTime.Parse(lastTimeChecketString);
 			}			
@@ -59,25 +62,25 @@ namespace ShowBot_MonoDaemon {
 			try {
 				ExecuteCheck();
 			} catch (Exception ex) {
-				Console.WriteLine("General Error {0}: {1} - {2}", DateTime.Now, ex.Message, ex.StackTrace);
+				Log.ErrorFormat("General Error {0}: {1} - {2}", DateTime.Now, ex);
 			}
 		}
 
 		private void ExecuteCheck() {
 			var dateNow = DateTime.Now;
-			Console.WriteLine("timer tick at {0}", dateNow);
-			Console.WriteLine("last check: {0}", lastTimeChecked);
+			Log.DebugFormat("timer tick at {0}", dateNow);
+			Log.DebugFormat("last check: {0}", lastTimeChecked);
 			try {
 				engine.CheckForNewShows(lastTimeChecked);
 				lastTimeChecked = dateNow;
 				PersistLastTimeCheck(lastTimeChecked);
 			} catch (Exception ex) {
-				Console.WriteLine("General Error checking for new shows from {0} to {1}: {2} - {3}", lastTimeChecked, dateNow, ex.Message, ex.StackTrace);
+				Log.ErrorFormat("General Error checking for new shows from {0} to {1}: {2} - {3}", lastTimeChecked, dateNow, ex);
 			}
 			try {
 				engine.CheckStatus();
 			} catch (Exception ex) {
-				Console.WriteLine("General Error checking status {0}: {1} - {2}", dateNow, ex.Message, ex.StackTrace);
+				Log.ErrorFormat("General Error checking status {0}: {1} - {2}", dateNow, ex);
 			}
 		}
 
@@ -85,17 +88,17 @@ namespace ShowBot_MonoDaemon {
 			var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
 			config.AppSettings.Settings[LAST_CHECK_DATE_KEY].Value = lastTimeChecked.ToString();
 			config.Save();
-			Console.WriteLine("last check date saved");
+			Log.InfoFormat("last check date saved");
 		}
 
 		public void Start(string[] args) {
-			Console.WriteLine("starting service");
+			Log.InfoFormat("starting service");
 			timer.Enabled = true;
 			ExecuteCheck();
 		}
 
 		public void Stop() {
-			Console.WriteLine("stopping service");
+			Log.InfoFormat("stopping service");
 			timer.Enabled = false;
 		}
 	}

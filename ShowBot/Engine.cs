@@ -7,9 +7,12 @@ using ShowBot.Model;
 using System.Threading.Tasks;
 using ShowBot.Infrastructure;
 using System.IO;
+using log4net;
 
 namespace ShowBot {
 	public class Engine : IEngine {
+		private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 		private readonly IDownloader downloader;
 		private readonly INewShowsProvider newShowsProvider;
 		private readonly ISubtitler subtitler;
@@ -30,18 +33,18 @@ namespace ShowBot {
 		}
 
 		public void CheckForNewShows(DateTime lastExecutionDate) {
-			Console.WriteLine("Checking for new shows...");
+			Log.Info("Checking for new shows...");
 			var newShows = newShowsProvider.GetNewShowsSince(lastExecutionDate);
-			Console.WriteLine("{0} new shows found.", newShows.Count());
+			Log.InfoFormat("{0} new shows found.", newShows.Count());
 
 			foreach (var newShow in newShows) {
-				Console.WriteLine("Downloading show {0} : {1}", newShow.Title, newShow.TorrentFile);
+				Log.InfoFormat("Downloading show {0} : {1}", newShow.Title, newShow.TorrentFile);
 				try {
 					var download = downloader.AddDownload(newShow);
-					Console.WriteLine("Show is beeing downloaded with id {0}", download.Id);
+					Log.DebugFormat("Show is beeing downloaded with id {0}", download.Id);
 					notifier.Notify(string.Format("Started downloading the show {0}", newShow.Title));
 				} catch (Exception ex) {
-					Console.WriteLine("Error adding show {0} :{1} - {2}", newShow.Title, ex.Message, ex.StackTrace);
+					Log.ErrorFormat("Error adding show {0} :{1} - {2}", newShow.Title, ex);
 				}
 			}
 		}
@@ -57,9 +60,9 @@ namespace ShowBot {
 		}
 
 		public void CheckStatus() {
-			Console.WriteLine("Checking for download status");
+			Log.InfoFormat("Checking for download status");
 			var currentDownloads = downloader.GetStatus();
-			Console.WriteLine("{0} currently active downloads", currentDownloads.Count());
+			Log.DebugFormat("{0} currently active downloads", currentDownloads.Count());
 
 			foreach (var download in currentDownloads) {
 				var privateTorrent = IsPrivateTorrent(download);
@@ -74,20 +77,21 @@ namespace ShowBot {
 
 		private void HandleFinishedDownload(Download finishedDownload) {
 			try {
-				Console.WriteLine("Handling finished download id {0}...", finishedDownload.Id);
+				Log.InfoFormat("Handling finished download id {0}...", finishedDownload.Id);
 				downloader.PauseDownload(finishedDownload);
 				string movieFile = GuessMovieFile(finishedDownload.Path, finishedDownload.Files);
 				string movieFullPath = Path.Combine(finishedDownload.Path, movieFile);
-				Console.WriteLine("Getting subtitles for movie {0}", movieFullPath);
+				Log.DebugFormat("Getting subtitles for movie {0}", movieFullPath);
 				bool couldFindSubtitle = subtitler.GetSubtitleForFile(movieFullPath);
-				Console.WriteLine("Subtitles found? {0}", couldFindSubtitle);
+				Log.DebugFormat("Subtitles found? {0}", couldFindSubtitle);
 				if (couldFindSubtitle) {
-					Console.WriteLine("Removing finished download...");
+					Log.DebugFormat("Removing finished download...");
 					downloader.RemoveDownload(finishedDownload);
-					Console.WriteLine("finished download removed.");
+					Log.InfoFormat("The movie {0} is completed", movieFile);
 					notifier.Notify(String.Format("The movie {0} is completed", movieFile));
 				}
 			} catch (Exception ex) {
+				Log.Error("Error handling finished download", ex);				
 				throw;
 			}
 		}

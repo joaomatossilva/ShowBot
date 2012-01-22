@@ -35,6 +35,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.1.2.11\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Mono.Posix">
       <HintPath>..\..\..\..\Program Files (x86)\Mono-2.10.5\lib\mono\4.0\Mono.Posix.dll</HintPath>
     </Reference>

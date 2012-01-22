@@ -4,10 +4,17 @@ using System.Linq;
 using System.Text;
 using Mono.Unix;
 using Mono.Unix.Native;
+using log4net.Config;
+using log4net;
 
 namespace ShowBot_MonoDaemon {
+
 	class Program {
+		private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 		static void Main(string[] args) {
+			XmlConfigurator.Configure();
+
 			UnixSignal intr = new UnixSignal (Signum.SIGINT);
 			UnixSignal term = new UnixSignal (Signum.SIGTERM);
 			UnixSignal hup = new UnixSignal (Signum.SIGHUP);
@@ -15,12 +22,12 @@ namespace ShowBot_MonoDaemon {
 
 			UnixSignal[] signals = new UnixSignal[] { intr, term, hup, usr2 };
 
-			Console.WriteLine("daemon: engine starting...");
+			Log.InfoFormat("daemon: engine starting...");
 
 			var service = new Service();
 			service.Start(null);
 
-			Console.WriteLine("daemon: engine started...");
+			Log.InfoFormat("daemon: engine started...");
 
 
 			for (bool running = true; running; )
@@ -29,14 +36,14 @@ namespace ShowBot_MonoDaemon {
 
 				if (idx < 0 || idx >= signals.Length) continue;
 
-				Console.WriteLine(string.Format("daemon: received signal {0}",signals[idx].Signum));
+				Log.InfoFormat("daemon: received signal {0}",signals[idx].Signum);
 
 				if ((intr.IsSet || term.IsSet)) 
 				{
 					intr.Reset ();
 					term.Reset ();
 
-					Console.WriteLine("daemon: stopping...");
+					Log.InfoFormat("daemon: stopping...");
 
 					running = false;
 				}

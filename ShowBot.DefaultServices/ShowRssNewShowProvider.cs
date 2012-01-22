@@ -5,9 +5,12 @@ using System.Text;
 using ShowBot.Services;
 using ShowBot.Model;
 using Argotic.Syndication;
+using log4net;
 
 namespace ShowBot.DefaultServices {
+
 	public class ShowRssNewShowProvider : INewShowsProvider {
+		private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
 		private readonly string feedUrl;
 
@@ -26,7 +29,7 @@ namespace ShowBot.DefaultServices {
 			});
 
 			foreach (var item in feed.Channel.Items) {
-				Console.WriteLine("{0}: {1}", item.Title, item.PublicationDate);
+				Log.DebugFormat("{0}: {1}", item.Title, item.PublicationDate);
 			}
 
 			var newShows = from item in feed.Channel.Items
