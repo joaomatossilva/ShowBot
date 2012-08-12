@@ -62,7 +62,7 @@ namespace ShowBot_MonoDaemon {
 			try {
 				ExecuteCheck();
 			} catch (Exception ex) {
-				Log.ErrorFormat("General Error {0}: {1} - {2}", DateTime.Now, ex);
+				Log.ErrorFormat("General Error {0}: {1}", DateTime.Now, ex);
 			}
 		}
 
@@ -75,12 +75,12 @@ namespace ShowBot_MonoDaemon {
 				lastTimeChecked = dateNow;
 				PersistLastTimeCheck(lastTimeChecked);
 			} catch (Exception ex) {
-				Log.ErrorFormat("General Error checking for new shows from {0} to {1}: {2} - {3}", lastTimeChecked, dateNow, ex);
+				Log.ErrorFormat("General Error checking for new shows from {0} to {1}: {2}", lastTimeChecked, dateNow, ex);
 			}
 			try {
 				engine.CheckStatus();
 			} catch (Exception ex) {
-				Log.ErrorFormat("General Error checking status {0}: {1} - {2}", dateNow, ex);
+				Log.ErrorFormat("General Error checking status {0}: {1}", dateNow, ex);
 			}
 		}
 

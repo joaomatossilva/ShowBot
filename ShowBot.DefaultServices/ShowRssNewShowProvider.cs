@@ -13,10 +13,12 @@ namespace ShowBot.DefaultServices {
 		private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
 		private readonly string feedUrl;
+		private readonly int hoursOffset;
 
 		public ShowRssNewShowProvider(IConfig config) {
 			var settings = config.GetConfigurationSettings();
 			feedUrl = settings.FeedUrl;
+			hoursOffset = Convert.ToInt32(settings.HoursOffset);
 		}
 
 		public IEnumerable<Show> GetNewShowsSince(DateTime sinceDate) {
@@ -33,7 +35,7 @@ namespace ShowBot.DefaultServices {
 			}
 
 			var newShows = from item in feed.Channel.Items
-						   where item.PublicationDate >= sinceDate
+						   where item.PublicationDate >= sinceDate.AddHours(-1 * hoursOffset)
 						   select new Show { Title = item.Title, TorrentFile = item.Link.ToString() };
 
 			return newShows;
