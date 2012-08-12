@@ -41,5 +41,9 @@ namespace ShowBot.DefaultServices {
 			}
 			return true;
 		}
+
+		public bool GetSubtitleForName(string movieName, string movieFilePath) {
+			return false;
+		}
 	}
 }

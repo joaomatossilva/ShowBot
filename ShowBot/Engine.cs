@@ -84,6 +84,11 @@ namespace ShowBot {
 				Log.DebugFormat("Getting subtitles for movie {0}", movieFullPath);
 				bool couldFindSubtitle = subtitler.GetSubtitleForFile(movieFullPath);
 				Log.DebugFormat("Subtitles found? {0}", couldFindSubtitle);
+				if (!couldFindSubtitle) {
+					Log.DebugFormat("Getting subtitles for torrent name {0}", finishedDownload.Name);
+					couldFindSubtitle = subtitler.GetSubtitleForName(finishedDownload.Name, movieFullPath);
+					Log.DebugFormat("Subtitles found? {0}", couldFindSubtitle);
+				}
 				if (couldFindSubtitle) {
 					Log.DebugFormat("Removing finished download...");
 					downloader.RemoveDownload(finishedDownload);
@@ -97,7 +102,7 @@ namespace ShowBot {
 		}
 
 		private string GuessMovieFile(string path, IEnumerable<DownloadFile> files) {
-			var biggestFile = files.OrderByDescending(file => file.Lenght).First();
+			var biggestFile = files.OrderByDescending(file => file.Length).First();
 			return biggestFile.Name;
 		}
 	}

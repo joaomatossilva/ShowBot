@@ -11,7 +11,8 @@ namespace ShowBot.Model {
 		public double Progress { get; set; }
 		public string Path { get; set; }
 		public IEnumerable<DownloadFile> Files { get; private set; }
-		public IEnumerable<string> Trackers { get; private set; } 
+		public IEnumerable<string> Trackers { get; private set; }
+		public string Name { get; set; }
 
 		public Download() {
 			Files = new DownloadFile[0];
@@ -31,6 +32,6 @@ namespace ShowBot.Model {
 	public class DownloadFile {
 		public int Id { get; set; }
 		public string Name { get; set; }
-		public long Lenght { get; set; }
+		public long Length { get; set; }
 	}
 }

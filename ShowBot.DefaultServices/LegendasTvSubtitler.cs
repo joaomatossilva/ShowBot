@@ -21,11 +21,20 @@ namespace ShowBot.DefaultServices {
 		}
 
 		public bool GetSubtitleForFile(string movieFilePath) {
+			string fileName = Path.GetFileNameWithoutExtension(movieFilePath);
+			var normalizedFileName = NormalizeSearchString(fileName);
+			return this.Search(normalizedFileName, fileName);
+		}
+
+		public bool GetSubtitleForName(string movieName, string movieFilePath) {
+			return this.Search(movieName, movieFilePath);
+		}
+
+		private bool Search(string searchPattern, string movieFilePath) {
 			using (var legendasTv = new LegendasTv()) {
 				legendasTv.Login(userName, password);
 				string fileName = Path.GetFileNameWithoutExtension(movieFilePath);
-				var normalizedFileName = NormalizeSearchString(fileName);
-				var legendas = legendasTv.Search(normalizedFileName);
+				var legendas = legendasTv.Search(searchPattern);
 				if (legendas.Count == 0) {
 					return false;
 				}
@@ -99,7 +108,7 @@ namespace ShowBot.DefaultServices {
 			return bestMatchSubjectSoFar;
 		}
 
-		private static readonly Regex showNameEpisodeAndSeasonRegularExpression = new Regex(@"(.*?)\.S?(\d{1,2})E?(\d{2})\.(.*)", RegexOptions.IgnoreCase);
+		private static readonly Regex showNameEpisodeAndSeasonRegularExpression = new Regex(@"(.*?)\.S(\d{1,2})E(\d{2})\.(.*)", RegexOptions.IgnoreCase);
 
 		private static string NormalizeSearchString(string movieFileName) {
 			var matches = showNameEpisodeAndSeasonRegularExpression.Match(movieFileName);

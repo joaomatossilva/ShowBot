@@ -63,7 +63,7 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="TransmissionNet">
+    <Reference Include="TransmissionNet, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\lib\TransmissionNet.dll</HintPath>
     </Reference>
   </ItemGroup>

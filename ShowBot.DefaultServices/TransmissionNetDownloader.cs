@@ -81,10 +81,11 @@ namespace ShowBot.DefaultServices {
 		private Download BuildDownloadFromTorrent(TorrentStatus torrent) {
 			return new Download(
 				(from file in torrent.files
-				 select new DownloadFile { Name = file.name, Lenght = file.lenght }).ToList(),
+				 select new DownloadFile { Name = file.name, Length = file.length }).ToList(),
 				(from tracker in torrent.trackers
 				 select tracker.announce).ToList()
 				) {
+					Name = torrent.name,
 					Id = torrent.id,
 					Path = HandleDownloadDir(torrent.downloadDir),
 					Progress = torrent.percentDone,

@@ -6,5 +6,6 @@ using System.Text;
 namespace ShowBot.Services {
 	public interface ISubtitler {
 		bool GetSubtitleForFile(string movieFilePath);
+		bool GetSubtitleForName(string movieName, string movieFilePath);
 	}
 }
