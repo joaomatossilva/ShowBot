@@ -23,7 +23,7 @@ namespace ShowBot.DefaultServices {
 		public bool GetSubtitleForFile(string movieFilePath) {
 			string fileName = Path.GetFileNameWithoutExtension(movieFilePath);
 			var normalizedFileName = NormalizeSearchString(fileName);
-			return this.Search(normalizedFileName, fileName);
+			return this.Search(normalizedFileName, movieFilePath);
 		}
 
 		public bool GetSubtitleForName(string movieName, string movieFilePath) {
